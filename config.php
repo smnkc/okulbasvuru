@@ -15,11 +15,14 @@ define('DB_CHARSET', 'utf8mb4');
 // Project URL (Auto-detect)
 $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http";
 $host = $_SERVER['HTTP_HOST'];
-$script = $_SERVER['SCRIPT_NAME'];
-$path = dirname($script);
 
-// Ensure path ends with slash and fix backslashes on Windows
-$path = rtrim(str_replace('\\', '/', $path), '/'); 
+// Determine path relative to document root using config.php location
+$scriptDir = str_replace('\\', '/', __DIR__);
+$docRoot = str_replace('\\', '/', $_SERVER['DOCUMENT_ROOT']);
+$path = str_replace($docRoot, '', $scriptDir);
+
+// Ensure path ends with slash
+$path = rtrim($path, '/');
 if ($path == '') $path = '/';
 else $path .= '/';
 

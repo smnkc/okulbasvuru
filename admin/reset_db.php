@@ -11,7 +11,7 @@ if (isset($_GET['confirm']) && $_GET['confirm'] == 'yes') {
         $pdo->exec("SET FOREIGN_KEY_CHECKS = 1");
         echo "<h1>Veritabanı Sıfırlandı</h1>";
         echo "<p>Tüm öğrenci ve cevap kayıtları silindi. ID sayacı 1'den başlayacak.</p>";
-        echo "<a href='admin/dashboard.php'>Panele Dön</a>";
+        echo "<a href='dashboard.php'>Panele Dön</a>";
     } catch (PDOException $e) {
         echo "Hata: " . $e->getMessage();
     }
