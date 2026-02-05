@@ -17,7 +17,7 @@ if (!$student) {
 }
 
 // Get School Info
-$stmt2 = $pdo->query("SELECT school_name FROM settings WHERE id = 1");
+$stmt2 = $pdo->query("SELECT * FROM settings WHERE id = 1");
 $settings = $stmt2->fetch();
 ?>
 <!DOCTYPE html>
@@ -48,12 +48,22 @@ $settings = $stmt2->fetch();
         <h2 class="mb-3">Başvurunuz Alındı!</h2>
         <p class="text-muted mb-4">
             Sayın aday, başvurunuz <strong><?php echo htmlspecialchars($settings['school_name']); ?></strong> sistemine başarıyla kaydedilmiştir.<br>
-            Sınava giriş belgenizi aşağıdaki butona tıklayarak hemen indirebilirsiniz.
+            Sınava giriş belgenizi <?php echo $settings['allow_download'] ? 'aşağıdaki butona tıklayarak hemen indirebilirsiniz.' : 'okul idaresinden temin edebilirsiniz.'; ?>
         </p>
 
-        <a href="generate_pdf.php?id=<?php echo $id; ?>" target="_blank" class="btn-print">
-            <i class="fas fa-file-pdf me-2"></i> GİRİŞ BELGESİ İNDİR
-        </a>
+        <?php if ($settings['allow_download']): ?>
+            <a href="generate_pdf.php?id=<?php echo $id; ?>" target="_blank" class="btn-print">
+                <i class="fas fa-file-pdf me-2"></i> GİRİŞ BELGESİ İNDİR
+            </a>
+        <?php else: ?>
+            <div class="alert alert-warning">
+                <i class="fas fa-info-circle me-2"></i>
+                <?php 
+                    $msg = $settings['download_disabled_text'];
+                    echo !empty($msg) ? htmlspecialchars($msg) : "Giriş Belgenizi Okul İdaresinden Almayı Unutmayın."; 
+                ?>
+            </div>
+        <?php endif; ?>
 
         <div class="mt-4">
             <a href="index.php" class="text-muted small text-decoration-none">Ana Sayfaya Dön</a>

@@ -92,7 +92,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['a
     $res = $stmt->fetch();
     
     if ($res) {
-        redirect('generate_pdf.php?id=' . $res['id']);
+        if ($settings['allow_download']) {
+            redirect('generate_pdf.php?id=' . $res['id']);
+        } else {
+            // Show alert with message from settings
+            $query_error = htmlspecialchars($settings['download_disabled_text']);
+            if (empty($query_error)) {
+                $query_error = "Giriş belgesi indirme şu anda aktif değildir.";
+            }
+        }
     } else {
         $query_error = "Kayıt bulunamadı. Lütfen bilgilerinizi kontrol ediniz veya sorun yaşıyorsanız okul ile iletişime geçiniz.";
     }
@@ -141,6 +149,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['a
         <?php endif; ?>
         <h2 class="m-0" style="color: var(--main-color);"><?php echo htmlspecialchars($settings['school_name']); ?></h2>
         <h5 class="text-muted mt-2">Öğrenci Kabul Sınavı Başvuru Sistemi</h5>
+        <p class="lead mt-2 mb-0" style="color: var(--main-color); font-weight: bold;">Sınav Tarihi: <?php echo htmlspecialchars($settings['exam_date_text']); ?></p>
     </div>
 </div>
 
@@ -161,7 +170,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['a
                 <button class="nav-link active" id="apply-tab" data-bs-toggle="tab" data-bs-target="#apply" type="button" role="tab"><i class="fas fa-file-signature"></i> Başvuru Yap</button>
             </li>
             <li class="nav-item" role="presentation">
-                <button class="nav-link" id="query-tab" data-bs-toggle="tab" data-bs-target="#query" type="button" role="tab"><i class="fas fa-search"></i> Başvuru Sorgula / Belge İndir</button>
+                <button class="nav-link" id="query-tab" data-bs-toggle="tab" data-bs-target="#query" type="button" role="tab"><i class="fas fa-search"></i> <?php echo $settings['allow_download'] ? 'Başvuru Sorgula / Belge İndir' : 'Başvuru Sorgula'; ?></button>
             </li>
         </ul>
 
@@ -256,7 +265,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['a
                             <div class="mb-3" style="max-width: 300px; margin: 0 auto;">
                                 <input type="text" name="query_tc" class="form-control form-control-lg text-center" placeholder="T.C. Kimlik No" maxlength="11" required>
                             </div>
-                            <button type="submit" class="btn btn-success"><i class="fas fa-search"></i> SORGULA VE BELGE İNDİR</button>
+                            <button type="submit" class="btn btn-success"><i class="fas fa-search"></i> <?php echo $settings['allow_download'] ? 'SORGULA VE BELGE İNDİR' : 'BAŞVURU SORGULA'; ?></button>
                         </form>
                     </div>
                 </div>

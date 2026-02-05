@@ -42,22 +42,23 @@ CREATE TABLE `form_fields` (
   `input_type` enum('text','number','date','select','textarea') NOT NULL,
   `options` text DEFAULT NULL COMMENT 'Comma separated options if select',
   `is_required` tinyint(1) NOT NULL DEFAULT 1,
-  `order_num` int(11) NOT NULL DEFAULT 0
+  `order_num` int(11) NOT NULL DEFAULT 0,
+  `show_in_pdf` tinyint(1) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_turkish_ci;
 
 --
 -- Dumping data for table `form_fields`
 --
 
-INSERT INTO `form_fields` (`id`, `label`, `input_type`, `options`, `is_required`, `order_num`) VALUES
-(1, 'Adınız', 'text', NULL, 1, 1),
-(2, 'Soyadınız', 'text', NULL, 1, 2),
-(3, 'Doğum Tarihi', 'date', NULL, 1, 3),
-(4, 'Cinsiyet', 'select', 'Kız,Erkek', 1, 4),
-(5, 'Okulunuz', 'text', NULL, 1, 5),
-(6, 'Sınıf Seviyesi', 'select', '4. Sınıf,5. Sınıf,6. Sınıf,7. Sınıf,8. Sınıf', 1, 6),
-(7, 'Veli Adı Soyadı', 'text', NULL, 1, 7),
-(8, 'Veli Telefon', 'text', NULL, 1, 8);
+INSERT INTO `form_fields` (`id`, `label`, `input_type`, `options`, `is_required`, `order_num`, `show_in_pdf`) VALUES
+(1, 'Adınız', 'text', NULL, 1, 1, 1),
+(2, 'Soyadınız', 'text', NULL, 1, 2, 1),
+(3, 'Doğum Tarihi', 'date', NULL, 1, 3, 1),
+(4, 'Cinsiyet', 'select', 'Kız,Erkek', 1, 4, 1),
+(5, 'Okulunuz', 'text', NULL, 1, 5, 1),
+(6, 'Sınıf Seviyesi', 'select', '4. Sınıf,5. Sınıf,6. Sınıf,7. Sınıf,8. Sınıf', 1, 6, 1),
+(7, 'Veli Adı Soyadı', 'text', NULL, 1, 7, 0),
+(8, 'Veli Telefon', 'text', NULL, 1, 8, 0);
 
 -- --------------------------------------------------------
 
@@ -72,15 +73,17 @@ CREATE TABLE `settings` (
   `exam_date_text` varchar(255) NOT NULL,
   `exam_rules_text` text NOT NULL,
   `contact_info_text` text NOT NULL,
-  `system_active` tinyint(1) NOT NULL DEFAULT 1
+  `system_active` tinyint(1) NOT NULL DEFAULT 1,
+  `allow_download` tinyint(1) NOT NULL DEFAULT 1,
+  `download_disabled_text` text NOT NULL DEFAULT ''
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_turkish_ci;
 
 --
 -- Dumping data for table `settings`
 --
 
-INSERT INTO `settings` (`id`, `school_name`, `logo_path`, `exam_date_text`, `exam_rules_text`, `contact_info_text`, `system_active`) VALUES
-(1, 'Örnek Eğitim Kurumları', 'img/logo.png', '15 Mart 2026 Pazar, Saat 10:00', '1. Sınav saatinden 30 dakika önce hazır bulununuz.\r\n2. Yanınızda kurşun kalem ve silgi getiriniz.\r\n3. Sınav süresi 120 dakikadır.', 'Veli İletişim Hattı: 0212 555 55 55\nE-Posta: bilgi@okul.com', 1);
+INSERT INTO `settings` (`id`, `school_name`, `logo_path`, `exam_date_text`, `exam_rules_text`, `contact_info_text`, `system_active`, `allow_download`, `download_disabled_text`) VALUES
+(1, 'Örnek Eğitim Kurumları', 'img/logo.png', '15 Mart 2026 Pazar, Saat 10:00', '1. Sınav saatinden 30 dakika önce hazır bulununuz.\r\n2. Yanınızda kurşun kalem ve silgi getiriniz.\r\n3. Sınav süresi 120 dakikadır.', 'Veli İletişim Hattı: 0212 555 55 55\nE-Posta: bilgi@okul.com', 1, 1, 'Giriş Belgenizi Okul İdaresinden Almayı Unutmayın.');
 
 -- --------------------------------------------------------
 

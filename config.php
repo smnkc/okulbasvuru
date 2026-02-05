@@ -1,14 +1,15 @@
 <?php
 // PHP Error Reporting for Debugging (Disable in production)
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+// PHP Error Reporting for Debugging (Disable in production)
+// ini_set('display_errors', 1);
+// ini_set('display_startup_errors', 1);
+error_reporting(0);
 
 // Database Configuration
 define('DB_HOST', 'localhost');
-define('DB_NAME', 'DB_NAME_HERE');
-define('DB_USER', 'DB_USER_HERE');
-define('DB_PASS', 'DB_PASSWORD_HERE');
+define('DB_NAME', 'exam_db');
+define('DB_USER', 'root');
+define('DB_PASS', '');
 define('DB_CHARSET', 'utf8mb4');
 
 // Project URL (Update according to your server)

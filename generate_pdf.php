@@ -17,7 +17,7 @@ if (!$student) {
 }
 
 // Fetch Answers
-$stmt2 = $pdo->prepare("SELECT a.answer, f.label, f.order_num FROM student_answers a JOIN form_fields f ON a.field_id = f.id WHERE a.student_id = ? ORDER BY f.order_num ASC");
+$stmt2 = $pdo->prepare("SELECT a.answer, f.label, f.order_num, f.show_in_pdf FROM student_answers a JOIN form_fields f ON a.field_id = f.id WHERE a.student_id = ? ORDER BY f.order_num ASC");
 $stmt2->execute([$id]);
 $answers = $stmt2->fetchAll();
 
@@ -98,7 +98,8 @@ $pdf->SetFont('DejaVu','',10);
 $pdf->Cell(0, 10, $student['unique_id'], 1, 1, 'L');
 
 foreach ($answers as $ans) {
-    if ($ans['label'] == 'Veli Adı Soyadı' || $ans['label'] == 'Veli Telefon') continue; // Skip parent info on entry doc if desired
+    // Check if allowed to show in PDF
+    if (!$ans['show_in_pdf']) continue;
     
     $pdf->SetFont('DejaVu','B',10);
     $pdf->Cell(50, 10, $ans['label'] . ':', 1, 0, 'L');
